@@ -70,6 +70,12 @@ class Image2dComponent extends JComponent {
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 
+
+		//origin in bottom left, and y-axis points up
+		g2.scale(1, -1);
+		g2.translate(0, -getHeight());
+
+
 		// set the background color
 		Dimension d = getSize();
         g2.setBackground(Color.black);

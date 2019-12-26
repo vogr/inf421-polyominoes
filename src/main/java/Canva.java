@@ -20,6 +20,11 @@ public class Canva {
     }
   }
 
+  void clear() {
+    image.getColoredPolygons().clear();
+    image.getEdges().clear();
+  }
+
   void show() {
     new Image2dViewer(image);
   }

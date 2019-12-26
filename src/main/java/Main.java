@@ -14,9 +14,8 @@ public class Main {
       System.err.println(String.format("Error reading file: %s", e.getMessage()));
     }
     //canva.draw_polyomino(polyominoes.get(1), Color.red);
-    canva.draw_polyomino(polyominoes.get(1).copy().mirror_y_axis(0).center(), Color.blue);
+    canva.draw_polyomino(polyominoes.get(1).copy().center(), Color.blue);
     canva.show();
-
   }
 
 }
