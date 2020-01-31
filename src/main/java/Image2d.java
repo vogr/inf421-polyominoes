@@ -41,7 +41,8 @@ public class Image2d {
 
 	// Create the polygon with xcoords, ycoords and color 
 	public void addPolygon(int[] xcoords, int[] ycoords, Color color) {
-		coloredPolygons.add(new ColoredPolygon(xcoords, ycoords, color));
+		if(xcoords == null) coloredPolygons.add(null);
+		else coloredPolygons.add(new ColoredPolygon(xcoords, ycoords, color));
 	}
 	
 	// Create the edge with coordinates x1, y1, x2, y2
@@ -73,20 +74,23 @@ class Image2dComponent extends JComponent {
 
 		//origin in bottom left, and y-axis points up
 		g2.scale(1, -1);
-		g2.translate(0, -getHeight());
+		g2.translate(0, -getHeight()/2);
 
 
 		// set the background color
 		Dimension d = getSize();
-        g2.setBackground(Color.black);
+        g2.setBackground(Color.white);
         g2.clearRect(0,0,d.width,d.height);
         
         // draw the polygons
 		synchronized (img.getColoredPolygons()) {
 			for (ColoredPolygon coloredPolygon : img.getColoredPolygons()) {
-				g2.setColor(coloredPolygon.color);
-				g2.fillPolygon(coloredPolygon.polygon);
-				g2.drawPolygon(coloredPolygon.polygon);
+				if(coloredPolygon == null) {g2.translate(50, 0);}
+				else {
+					g2.setColor(coloredPolygon.color);
+					g2.fillPolygon(coloredPolygon.polygon);
+					g2.drawPolygon(coloredPolygon.polygon);
+				}
 			}
 		}
 		
