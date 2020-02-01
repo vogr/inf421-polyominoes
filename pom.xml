@@ -13,7 +13,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.9</maven.compiler.source>
         <maven.compiler.target>1.9</maven.compiler.target>
-        <exec.mainClass>edu.polytechnique.polynominoes.Main</exec.mainClass>
     </properties>
 
     

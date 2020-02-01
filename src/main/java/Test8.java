@@ -19,7 +19,7 @@ public class Test8 {
 		
 		
 		//PolyominoCoordList T = new PolyominoCoordList(squaresT); 
-		Set<PolyominoCoordList> S = PolyominoCoordList.generate_fixed_polyominoes(4);
+		Set<Polyomino> S = Polyomino.generate_fixed_polyominoes(4);
 		//add data;
 		//S.add(T);
 		
@@ -46,7 +46,7 @@ public class Test8 {
 		for(Coordinates cor : listCoord)
 			squareP.add(cor);
 		
-		PolyominoCoordList P = new PolyominoCoordList(squareP); 
+		Polyomino P = new Polyomino(squareP);
 		Tiling t = new Tiling();
 		Tiling.adaptRepresentation(P, S);
 		for (int i = 0; i < t.M.length; i++) {
@@ -76,7 +76,7 @@ public class Test8 {
 				for(int cor : polyoInt) {
 					coords.add(listCoord.get(cor-1));
 				}
-				PolyominoCoordList polyo = new PolyominoCoordList(coords);
+				Polyomino polyo = new Polyomino(coords);
 				polyo.draw_on(canva, listOfColors.get(i));
 				i++;
 			}

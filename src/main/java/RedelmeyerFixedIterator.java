@@ -1,7 +1,7 @@
 import java.util.*;
 
 
-public class RedelmeyerFixedIterator implements Iterator<PolyominoCoordList> {
+public class RedelmeyerFixedIterator implements Iterator<Polyomino> {
   /*
    * Implements the Redelmeyer generation of fixed polyominoes as an iterator.
    * The algorithm is described with recursion in the paper ; this implementation uses
@@ -17,7 +17,7 @@ public class RedelmeyerFixedIterator implements Iterator<PolyominoCoordList> {
   Deque<UntriedLinkedList> untried_stack;
   Deque<List<Coordinates>> formerly_free_stack;
 
-  PolyominoCoordList next;
+  Polyomino next;
 
   RedelmeyerFixedIterator(int size) {
     this.size = size;
@@ -52,7 +52,7 @@ public class RedelmeyerFixedIterator implements Iterator<PolyominoCoordList> {
     return this.next != null;
   }
 
-  public PolyominoCoordList next() {
+  public Polyomino next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
     }
@@ -109,7 +109,7 @@ public class RedelmeyerFixedIterator implements Iterator<PolyominoCoordList> {
       if (!untried_stack.peek().isEmpty()) {
         HashSet<Coordinates> res_coords = new HashSet<>(parent_coords);
         res_coords.add(untried_stack.peek().pop());
-        this.next = new PolyominoCoordList(res_coords);
+        this.next = new Polyomino(res_coords);
         return;
       }
     }
