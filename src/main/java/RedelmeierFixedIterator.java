@@ -1,7 +1,7 @@
 import java.util.*;
 
 
-public class RedelmeyerFixedIterator implements Iterator<Polyomino> {
+public class RedelmeierFixedIterator implements Iterator<Polyomino> {
   /*
    * Implements the Redelmeyer generation of fixed polyominoes as an iterator.
    * The algorithm is described with recursion in the paper ; this implementation uses
@@ -19,7 +19,7 @@ public class RedelmeyerFixedIterator implements Iterator<Polyomino> {
 
   Polyomino next;
 
-  RedelmeyerFixedIterator(int size) {
+  RedelmeierFixedIterator(int size) {
     this.size = size;
 
     if (size <= 0) {
@@ -117,7 +117,7 @@ public class RedelmeyerFixedIterator implements Iterator<Polyomino> {
 
 
   public static int fixed_polyomino_count(int size) {
-    RedelmeyerFixedIterator it = new RedelmeyerFixedIterator(size);
+    RedelmeierFixedIterator it = new RedelmeierFixedIterator(size);
     int count = 0;
     while(it.hasNext()) {
       count++;
