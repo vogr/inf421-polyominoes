@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Coordinates {
@@ -37,12 +39,12 @@ public class Coordinates {
 		this.y = y;
 	}
 	
-	public Set<Coordinates> getNeighbors(){
-		Set<Coordinates> neighbors = new HashSet<Coordinates>();
+	public List<Coordinates> getNeighbors(){
+		List<Coordinates> neighbors = new ArrayList<Coordinates>();
+		neighbors.add(new Coordinates(this.x+1,this.y));
+		neighbors.add(new Coordinates(this.x,this.y+1));
 		neighbors.add(new Coordinates(this.x-1,this.y));
 		neighbors.add(new Coordinates(this.x,this.y-1));
-		neighbors.add(new Coordinates(this.x,this.y+1));
-		neighbors.add(new Coordinates(this.x+1,this.y));
 		return neighbors;
 	}
 	
@@ -52,7 +54,7 @@ public class Coordinates {
 
 	@Override
 	public String toString() {
-		return "Coordinates [x=" + x + ", y=" + y + "]";
+		return String.format("(%d, %d)", x, y);
 	}
 	
 	  @Override

@@ -29,7 +29,7 @@ public class Main {
 			pol.setOccupied(c);
 			if(pol.size==n) count++;
 			else {
-				Set<Coordinates> neighbors = c.getNeighbors();
+				List<Coordinates> neighbors = c.getNeighbors();
 				Set<Coordinates> newNeigh = new HashSet<Coordinates>();
 				LinkedList<Coordinates> untried_neigh = new LinkedList<Coordinates>();
 				for(Coordinates cor : untried) {

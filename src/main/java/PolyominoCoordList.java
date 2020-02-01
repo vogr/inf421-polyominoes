@@ -256,7 +256,7 @@ public class PolyominoCoordList {
 
       for (PolyominoCoordList polyo : to_process) {
         for(Coordinates p : polyo.coords ) {
-          Set<Coordinates> neighbors = p.getNeighbors();
+          List<Coordinates> neighbors = p.getNeighbors();
           for (Coordinates n : neighbors) {
             if (((n.x >= 0 && n.y >= 0) || (n.x < 0 && n.y >= 1)) && !polyo.coords.contains(n)) {
               PolyominoCoordList new_polyo = polyo.clone();
@@ -300,7 +300,7 @@ public class PolyominoCoordList {
 
       for (PolyominoCoordList polyo : to_process) {
         for (Coordinates p : polyo.coords) {
-          Set<Coordinates> neighbors = p.getNeighbors();
+          List<Coordinates> neighbors = p.getNeighbors();
           for (Coordinates n : neighbors) {
             if (! polyo.coords.contains(n)) {
               PolyominoCoordList new_polyo = polyo.clone();

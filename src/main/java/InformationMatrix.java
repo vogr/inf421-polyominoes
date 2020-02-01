@@ -46,6 +46,19 @@ public class InformationMatrix<T> {
     return get(c.x, c.y);
   }
 
+  @Override
+  public String toString() {
+    StringBuilder b = new StringBuilder();
+    for (List<T> l : info) {
+      for (T e : l) {
+        b.append(e);
+        b.append(" ");
+      }
+      b.append("\n");
+    }
+    return b.toString();
+  }
+
   public InformationMatrix clone() {
     List<List<T>> clone = new ArrayList<>(2 * p - 1);
     for (List<T> l : info) {

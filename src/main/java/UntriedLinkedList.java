@@ -20,6 +20,12 @@ public class UntriedLinkedList {
     cell = new UntriedLinkedListCell(v, t);
   }
 
+
+  @Override
+  public String toString() {
+    return String.format("[%s]", cell);
+  }
+
   public boolean isEmpty() {
     return (cell == null);
   }
