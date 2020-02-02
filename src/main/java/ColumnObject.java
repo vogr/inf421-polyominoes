@@ -3,30 +3,21 @@ public class ColumnObject extends DataObject {
 	public ColumnObject R,L;
 	private int S;
 	public final int N;
-	
-	ColumnObject(){
-		U=null;
-		D=null;
-		R=null;
-		L=null;
-		S=0;
-		N=0;
-	}
-	public ColumnObject(DataObject u, DataObject d, ColumnObject r, ColumnObject l, int s, char n) {
+
+
+	public ColumnObject(DataObject u, DataObject d, ColumnObject r, ColumnObject l, int s, int name) {
 		U = u;
 		D = d;
 		R = r;
 		L = l;
 		S = s;
-		N = n;
+		N = name;
+		line = -1;
 	}
-	
-	public ColumnObject(char n) {
-		N = n;
-	}
-	
-	public ColumnObject(int n) {
-		N = n;
+
+	public ColumnObject(int name) {
+		N = name;
+		line = -1;
 	}
 	
 	public int getSize() {

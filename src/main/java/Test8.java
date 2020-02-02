@@ -54,11 +54,10 @@ public class Test8 {
 				System.out.print(t.M[i][j] + " ");
 			System.out.println();
 		}
-		DataStructure data = new DataStructure();
-		data.dancing_links(t.M);
-		
-		HashSet<HashSet<HashSet<Integer>>> cover = data.exactCover();
-		System.out.println(cover);
+		DancingLinks data = new DancingLinks(t.M);
+
+		//List<List<List<Integer>>> cover = data.exactCover();
+		//System.out.println(cover);
 		
 		List<Color> listOfColors = new LinkedList<>();
 		listOfColors.add(Color.red);
@@ -67,7 +66,8 @@ public class Test8 {
 		listOfColors.add(Color.yellow);
 		listOfColors.add(Color.orange);
 		listOfColors.add(Color.black);
-		
+
+		/*
 		int i;
 		for(HashSet<HashSet<Integer>> set : cover) {
 			i = 0;
@@ -83,6 +83,8 @@ public class Test8 {
 			canva.offset();
 		}
 		canva.show();
+
+		 */
 		
 	}
 }

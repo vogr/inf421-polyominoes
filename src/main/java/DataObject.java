@@ -2,6 +2,7 @@
 public class DataObject {
 	public DataObject U,D,R,L;
 	ColumnObject C;
+	int line;
 	
 	DataObject(){
 		U=null;
@@ -9,8 +10,17 @@ public class DataObject {
 		R=null;
 		L=null;
 		C=null;
+		this.line=-1;
 	}
 
+	DataObject(int line){
+		U=null;
+		D=null;
+		R=null;
+		L=null;
+		C=null;
+		this.line=line;
+	}
 	public DataObject(DataObject u, DataObject d, DataObject r, DataObject l, ColumnObject c) {
 		super();
 		U = u;
@@ -20,8 +30,9 @@ public class DataObject {
 		C = c;
 	}
 	
-	public DataObject(ColumnObject c) {
+	public DataObject(ColumnObject c, int line) {
 		C = c;
+		this.line = line;
 	}
 	
 	public void setColumn(ColumnObject c) {

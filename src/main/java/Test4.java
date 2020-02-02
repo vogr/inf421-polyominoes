@@ -18,7 +18,7 @@ public class Test4 {
 			ExactCover exact = new ExactCover(M);
 			System.out.println("M = \n" + exact.M_repr());
 			Instant start = Instant.now();
-			List<Set<Integer>> P = exact.solve();
+			List<List<Integer>> P = exact.solve();
 			Duration d = Duration.between(start, Instant.now());
 			System.out.println(String.format("(M) Nombre de solutions : %d\t(%d ms)", P.size(), d.toMillis()));
 			exact.print_solutions(P);
@@ -31,8 +31,9 @@ public class Test4 {
 							Subsets.transformToMatrix(sub.getAllSubsets(size), size)
 			);
 			Instant start = Instant.now();
-			List<Set<Integer>> P = exact.solve();
+			List<List<Integer>> P = exact.solve();
 			Duration d = Duration.between(start, Instant.now());
-			System.out.println(String.format("(%d) Nombre de solutions : %d  (%d ms)", size,  P.size(), d.toMillis())); }
+			System.out.println(String.format("(%d) Nombre de solutions : %d  (%d ms)", size,  P.size(), d.toMillis()));
+		}
 	}
 }
