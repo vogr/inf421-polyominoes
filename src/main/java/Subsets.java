@@ -2,6 +2,10 @@ import java.util.HashSet;
 import java.util.HashMap;
 
 public class Subsets {
+	/*
+	 * Classe permettant de générer les subsets de taille k d'un ensemble de taille n.
+	 * La structure de classe permet de memoïser les générations intermédiaires.
+	 */
 	static HashMap<Integer, HashSet<HashSet<Integer>>> completeSubsets;
 	static HashMap<Coordinates, HashSet<HashSet<Integer>>> kSubsets;
 	
@@ -32,7 +36,7 @@ public class Subsets {
 		}
 		HashSet<HashSet<Integer>> lowerSets = getAllSubsets(n-1);
 		for(HashSet<Integer> subset : lowerSets) {
-			HashSet<Integer> sub = (HashSet<Integer>) subset.clone();
+			HashSet<Integer> sub = new HashSet<>(subset);
 			sub.add(n);
 			S.add(subset);
 			S.add(sub);
@@ -60,12 +64,12 @@ public class Subsets {
 		HashSet<HashSet<Integer>> Sn_1k = getkSubsets(n-1,k);
 		
 		for(HashSet<Integer> subset : Sn_1k_1) {
-			HashSet<Integer> sub = (HashSet<Integer>) subset.clone();
+			HashSet<Integer> sub = new HashSet<>(subset);
 			sub.add(n);
 			Snk.add(sub);
 		}
 		for(HashSet<Integer> subset : Sn_1k) {
-			HashSet<Integer> sub = (HashSet<Integer>) subset.clone();
+			HashSet<Integer> sub = new HashSet<>(subset);
 			Snk.add(sub);
 		}
 		
@@ -101,7 +105,6 @@ public class Subsets {
 				System.out.print(M[i][j] + " ");
 			System.out.println();
 		}
-		
 	}
 	
 }
