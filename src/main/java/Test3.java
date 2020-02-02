@@ -3,7 +3,7 @@ import java.time.Instant;
 
 public class Test3 {
   public static void main(String args[]) {
-    System.out.println("Fixed polyominos count per size:");
+    System.out.println("Fixed polyominos generation with Radelmeier's algorithm (iterative):");
     for (int size = 0; size < 20; size++) {
       Instant start = Instant.now();
       int count = RedelmeierFixedIterator.fixed_polyomino_count(size);
