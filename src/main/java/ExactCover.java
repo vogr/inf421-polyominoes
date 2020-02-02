@@ -8,11 +8,32 @@ public class ExactCover {
 		this.M = M;
 	}
 
-	public HashSet<LinkedHashSet<Integer>> exactCover(HashSet<Integer> X, LinkedHashSet<Integer> C) {
+	int best_x(HashSet<Integer> X, LinkedHashSet<Integer> C) {
+		Iterator<Integer> it = X.iterator();
+		int x_min = it.next();
+		int x_min_count = 0;
+		for (int c : C) {
+			x_min_count += M[c][x_min];
+		}
+		while(it.hasNext()) {
+			int x = it.next();
+			int x_count = 0;
+			for (int c : C) {
+				x_count += M[c][x];
+			}
+			if (x_count < x_min_count) {
+				x_min = x;
+				x_min_count = x_count;
+			}
+		}
+		return x_min;
+	}
 
-		HashSet<LinkedHashSet<Integer>> P = new HashSet<>();
-		if (X.size() == 0)	{ P.add(new LinkedHashSet<>()); return P; }
-		int x = X.iterator().next();
+	public List<Set<Integer>> exactCover(HashSet<Integer> X, LinkedHashSet<Integer> C) {
+
+		List<Set<Integer>> P = new ArrayList<>();
+		if (X.size() == 0)	{ P.add(new HashSet<>()); return P; }
+		int x = best_x(X,C);
 		for(int s : C) {
 			if(M[s][x]==1) {
 				HashSet<Integer> X_prime = new HashSet<>(X);
@@ -25,7 +46,7 @@ public class ExactCover {
 						}
 					}
 				}
-				for(LinkedHashSet<Integer> partition : exactCover(X_prime,C_prime)) {
+				for(Set<Integer> partition : exactCover(X_prime,C_prime)) {
 					partition.add(s);
 					P.add(partition);
 				}
@@ -34,7 +55,7 @@ public class ExactCover {
 		return P;
 	}
 
-	public HashSet<LinkedHashSet<Integer>> solve() {
+	public List<Set<Integer>> solve() {
 		HashSet<Integer> X = new HashSet<>();
 		for (int x = 0; x < M[0].length; x++) {
 			X.add(x);
@@ -58,8 +79,8 @@ public class ExactCover {
 		}
 		return b.toString();
 	}
-	public void print_solutions(HashSet<LinkedHashSet<Integer>> P) {
-		for(LinkedHashSet<Integer> partition_set : P) {
+	public void print_solutions(List<Set<Integer>> P) {
+		for(Set<Integer> partition_set : P) {
 			List<Integer> partition = new ArrayList<>(partition_set);
 			Collections.sort(partition);
 			System.out.print("Une solution est : ");
