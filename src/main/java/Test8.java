@@ -13,7 +13,6 @@ public class Test8 {
 		Canva canva = new Canva(1900, 1000, 20);
 
 		Set<Polyomino> S = Polyomino.generate_fixed_polyominoes(4);
-		System.out.println(S.size());
 		Polyomino P = Polyomino.fromString("[(0,0),(0,1),(1,0)]").dilatation(2);
 
 		PolyominoTiling tiling = new PolyominoTiling(P, new ArrayList<>(S));
@@ -35,7 +34,6 @@ public class Test8 {
 		listOfColors.add(Color.orange);
 		listOfColors.add(Color.black);
 
-		int k = 0;
 		for (List<Polyomino> coverage : list_of_coverages) {
 			int i = 0;
 			for (Polyomino p : coverage) {
@@ -46,8 +44,6 @@ public class Test8 {
 			canva.offset();
 			canva.offset();
 			canva.offset();
-			k++;
-			if (k > 10) break;
 		}
 		canva.show();
 	}

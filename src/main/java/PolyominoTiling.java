@@ -66,7 +66,6 @@ public class PolyominoTiling {
         res.add(l);
       }
     }
-    res.stream().forEach(x -> System.out.println(Arrays.toString(x)));
     return res.toArray(new int[][]{});
   }
 
@@ -75,7 +74,6 @@ public class PolyominoTiling {
 
     int[][] M = build_M();
 
-    System.out.println(M[0].length + " " + P.size());
     DancingLinks d = new DancingLinks(M, P.size());
     List<List<Integer>> list_of_covering_lines = d.exactCover();
 
