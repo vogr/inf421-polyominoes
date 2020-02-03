@@ -25,7 +25,7 @@ public class Polyomino {
       coords.add(new Coordinates(xcoords.get(i), ycoords.get(i)));
   }
 
-  public Polyomino clone() {
+  public Polyomino copy() {
     return new Polyomino(new LinkedHashSet<>(coords));
   }
 
@@ -94,7 +94,7 @@ public class Polyomino {
     int l = i + 1;
     int r = l + 1;
 
-    if (! Character.isDigit(repr.charAt(l))) {
+    if (! (Character.isDigit(repr.charAt(l)) || repr.charAt(l)=='-') ) {
       throw new RuntimeException("Malformed tuple");
     }
     while (Character.isDigit(repr.charAt(r))) {
@@ -109,7 +109,7 @@ public class Polyomino {
 
     l = r+1;
     r = l+1;
-    if (! Character.isDigit(repr.charAt(l))) {
+    if (! (Character.isDigit(repr.charAt(l)) || repr.charAt(l)=='-')) {
       throw new RuntimeException("Malformed tuple");
     }
     while (Character.isDigit(repr.charAt(r))) {
@@ -181,7 +181,7 @@ public class Polyomino {
                 .collect(Collectors.toSet())
         );
       default:
-        return this.clone();
+        return this.copy();
     }
   }
 
@@ -259,7 +259,7 @@ public class Polyomino {
           List<Coordinates> neighbors = p.getNeighbors();
           for (Coordinates n : neighbors) {
             if (((n.x >= 0 && n.y >= 0) || (n.x < 0 && n.y >= 1)) && !polyo.coords.contains(n)) {
-              Polyomino new_polyo = polyo.clone();
+              Polyomino new_polyo = polyo.copy();
               new_polyo.coords.add(n);
               next_polyominoes.add(new_polyo);
             }
@@ -267,7 +267,7 @@ public class Polyomino {
         }
       }
     }
-    return new HashSet<>(next_polyominoes);
+    return next_polyominoes;
   }
 
   boolean has_free_repr_in_set(Set<Polyomino> set) {
@@ -303,7 +303,7 @@ public class Polyomino {
           List<Coordinates> neighbors = p.getNeighbors();
           for (Coordinates n : neighbors) {
             if (! polyo.coords.contains(n)) {
-              Polyomino new_polyo = polyo.clone();
+              Polyomino new_polyo = polyo.copy();
               new_polyo.coords.add(n);
               new_polyo = new_polyo.canonicalize();
               if (! new_polyo.has_free_repr_in_set(next_polyominoes)) {
@@ -314,99 +314,76 @@ public class Polyomino {
         }
       }
     }
-    return new HashSet<>(next_polyominoes);
+    return next_polyominoes;
   }
-  
-	public static Coordinates minimumOf(Set<Coordinates> set) {
-		int x = Integer.MAX_VALUE, y = Integer.MAX_VALUE;
-		for(Coordinates c : set) {
-			if(c.x < x) x = c.x;
-			if(c.y < y) y = c.y;
-		}
-		return new Coordinates(x,y);
-	}
-	
-	public static Coordinates maximumOf(Set<Coordinates> set) {
-		int x = 0, y = 0;
-		for(Coordinates c : set) {
-			if(c.x > x) x = c.x;
-			if(c.y > y) y = c.y;
-		}
-		return new Coordinates(x,y);
-	}
-	
-	
-	public Polyomino set(int x, int y) {
-		Coordinates min = minimumOf(this.coords);
-		return this.translate(x - min.x, y - min.y);
-	}
-	
-	public Polyomino set(Coordinates cor) {
-		return this.set(cor.x, cor.y);
-	}
-	
-	public LinkedHashSet<Set<Integer>> isPlaceable(Set<Coordinates> space) {
-		Polyomino pol = this;
-		LinkedHashSet<Set<Integer>> listPosPolyo = new LinkedHashSet<Set<Integer>>();
-		Coordinates minCoords = minimumOf(space);
-		minCoords.add(0, -1);
-		Coordinates maxCoords = maximumOf(space);
-		pol = pol.set(minCoords);
-		//System.out.println(this.squares);
-		for(int dx = 0; dx <= maxCoords.x; dx++) {
-			//System.out.println("here");
-			for(int dy=0; dy <= maxCoords.y; dy++) {
-				//System.out.println("and here");
-				pol = pol.translate(0, 1);
-				//System.out.println(this.squares);
-				Set<Integer> set = new HashSet<Integer>();
-				
-				for(Coordinates c : pol.coords) {
-					int i = -1;
-					for(Coordinates cor : space) {
-						i++;
-						if(cor.equals(c)) set.add(i);
-					}
-						
-				}
-				if(set.size()==pol.coords.size())	listPosPolyo.add(set);
-			}
-			pol = pol.translate(1, minCoords.y - maxCoords.y);
-		}
-		return listPosPolyo;			
-	}
-	
-	public LinkedHashSet<Set<Integer>> possiblePositions(Polyomino polyomino){
-		//System.out.println("called");
-		return polyomino.isPlaceable(this.coords);
-	}
-	
-	public LinkedHashSet<Set<Integer>> possiblePositions_With_Rotation(Polyomino polyomino){
-		//System.out.println("called");
-		LinkedHashSet<Set<Integer>> result = new LinkedHashSet<>();
-		for(int i = 1; i < 4 ; i++)
-			result.addAll(polyomino.rotate(i).isPlaceable(this.coords));
-		return result;
-	}
-	
-	public LinkedHashSet<Set<Integer>> possiblePositions_With_Mirror(Polyomino polyomino){
-		//System.out.println("called");
-		LinkedHashSet<Set<Integer>> result = new LinkedHashSet<>();
-		//result.addAll(polyomino.isPlaceable(this.coords));
-		result.addAll(this.possiblePositions_With_Rotation(polyomino));
-		result.addAll(this.possiblePositions_With_Rotation(polyomino.mirror_x_axis(0)));
-		//result.addAll(polyomino.mirror_y_axis(0).mirror_x_axis(0).isPlaceable(this.coords));
-		return result;
-	}
-	
-	public LinkedHashSet<Set<Integer>> possiblePositions_With_Rotation_And_Mirror(Polyomino polyomino){
-		//System.out.println("called");
-		LinkedHashSet<Set<Integer>> result = new LinkedHashSet<>();
-		result.addAll(this.possiblePositions(polyomino));
-		result.addAll(this.possiblePositions_With_Mirror(polyomino));
-		result.addAll(this.possiblePositions_With_Rotation(polyomino));
-		return result;
-	}
+
+  public static Coordinates minimumOf(Set<Coordinates> set) {
+    int x = Integer.MAX_VALUE, y = Integer.MAX_VALUE;
+    for(Coordinates c : set) {
+      if(c.x < x) x = c.x;
+      if(c.y < y) y = c.y;
+    }
+    return new Coordinates(x,y);
+  }
+
+  public static Coordinates maximumOf(Set<Coordinates> set) {
+    int x = 0, y = 0;
+    for(Coordinates c : set) {
+      if(c.x > x) x = c.x;
+      if(c.y > y) y = c.y;
+    }
+    return new Coordinates(x,y);
+  }
+
+
+  public Polyomino set(int x, int y) {
+    Coordinates min = minimumOf(this.coords);
+    return this.translate(x - min.x, y - min.y);
+  }
+
+  public Polyomino set(Coordinates cor) {
+    return this.set(cor.x, cor.y);
+  }
+
+
+  public List<Polyomino> placeable_translations_in(Set<Coordinates> space) {
+    List<Polyomino> placeable_translations = new ArrayList<>();
+
+    Polyomino canon = this.canonicalize();
+
+    for (Coordinates c : space) {
+      Polyomino p = canon.translate(c.x, c.y);
+      if (space.containsAll(p.coords)) {
+        placeable_translations.add(p);
+      }
+    }
+    return placeable_translations;
+  }
+
+  public List<Polyomino> placeable_translations_with_rotations_in(Set<Coordinates> space){
+    //System.out.println("called");
+    Set<Polyomino> result = new HashSet<>();
+    for(int i = 0; i < 4 ; i++)
+      result.addAll(this.rotate(i).placeable_translations_in(space));
+    return new ArrayList<>(result);
+  }
+
+  public List<Polyomino> placeable_translations_with_symmetries_in(Set<Coordinates> space){
+    Set<Polyomino> result = new HashSet<>();
+    result.addAll(this.placeable_translations_in(space));
+    result.addAll(this.mirror_x_axis(0).placeable_translations_in(space));
+    result.addAll(this.mirror_y_axis(0).placeable_translations_in(space));
+    return new ArrayList<>(result);
+  }
+  public List<Polyomino> placeable_translations_with_all_in(Set<Coordinates> space){
+    Set<Polyomino> result = new HashSet<>();
+    Polyomino mirror = this.mirror_x_axis(0);
+    for(int i = 0; i < 4 ; i++) {
+      result.addAll(this.rotate(i).placeable_translations_in(space));
+      result.addAll(mirror.rotate(i).placeable_translations_in(space));
+    }
+    return new ArrayList<>(result);
+  }
 
 }
 

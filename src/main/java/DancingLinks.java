@@ -3,8 +3,19 @@ import java.util.*;
 public class DancingLinks {
 	public ColumnObject H;
 	int[][] M;
+	// to prevent repetitions of polyominoes, we add virtual cells to the set to cover
+	// these new cell CAN'T be convered twice, but do not NEED to be covered
+	// to have an exact coverage.
+	int X_size;
 
-	DancingLinks (int[][] M) {
+	DancingLinks(int[][] M) {
+		// by default, there are no virtual cells,
+		// i.e. all cells belong to X
+		this(M, M[0].length);
+	}
+
+	DancingLinks (int[][] M, int X_size) {
+		this.X_size = X_size;
 		this.M = M;
 		H = new ColumnObject(0);
 		DataObject[][] matrix = new DataObject[M.length][M[0].length];
@@ -47,31 +58,29 @@ public class DancingLinks {
 	}
 
 	public ColumnObject getMin() {
-		ColumnObject current = this.H.R;
+		ColumnObject current = H.R;
 		ColumnObject minimumColumn = current;
 		int minimum = current.getSize();
-		while (this.H != current) {
-			current = current.R;
-			if(minimum < current.getSize()) {
+		current = current.R;
+		while (current != H && current.N <= X_size) {
+			if(current.getSize() < minimum) {
 				minimum = current.getSize();
 				minimumColumn = current;
 			}
+			current = current.R;
 		} 
 		return minimumColumn;
 	}
-	
-	public void print() {
-		ColumnObject cur_col = this.H;
-		do {
-			System.out.println(cur_col);
-			cur_col = cur_col.R;
-		} while (cur_col != this.H);
-	}
+
 	
 	public List<List<Integer>> exactCover() {
 		List<List<Integer>> P = new ArrayList<>();
 
-		if(H.R == H) {P.add(new ArrayList<>()); return P;}
+		//if all cells in X are already covered, return empty set
+		if (H.R == H || H.R.N > X_size) {
+			P.add(new ArrayList<>());
+			return P;
+		}
 		ColumnObject x = this.getMin();
 		x.coverColumn();
 		DataObject t = x.U;
@@ -82,9 +91,6 @@ public class DancingLinks {
 				y = y.L;
 			}
 			for(List<Integer> partition : exactCover()) {
-				if (partition.contains(t.line))  {
-					System.out.println("Error");
-				}
 				partition.add(t.line);
 				P.add(partition);
 			}
@@ -105,7 +111,7 @@ public class DancingLinks {
 			System.out.print("Une solution est : ");
 			for(int i : partition) {
 				System.out.print("{ ");
-				for(int j = 0 ; j < M[i].length ; j++)
+				for(int j = 0 ; j < X_size ; j++)
 					if(M[i][j] == 1) System.out.print(j + " ");
 				System.out.print("}");
 			}

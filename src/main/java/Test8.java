@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.*;
@@ -8,57 +10,23 @@ import java.util.List;
 
 public class Test8 {
 	public static void main(String[] args) {
-		Canva canva = new Canva(2000, 2000, 10);
-		//Set<Coordinates> squaresT = new LinkedHashSet<Coordinates>();
-		//Set<Coordinates> squaresQ = new LinkedHashSet<Coordinates>();
-		Set<Coordinates> squareP = new LinkedHashSet<Coordinates>();
-		//squaresT.add(new Coordinates(0,0));
-		//squaresT.add(new Coordinates(1,0));
-		//squaresT.add(new Coordinates(1,1));
-		
-		
-		
-		//PolyominoCoordList T = new PolyominoCoordList(squaresT); 
-		Set<Polyomino> S = Polyomino.generate_fixed_polyominoes(4);
-		//add data;
-		//S.add(T);
-		
-		
-		//PolyominoCoordList Q = new PolyominoCoordList(squaresQ); 
-		//squaresQ.add(new Coordinates(0,0));
-		//S.add(Q);
-		List<Coordinates> listCoord = new ArrayList<>();
-		
-		
-		listCoord.add(new Coordinates(0,0));
-		listCoord.add(new Coordinates(0,1));
-		listCoord.add(new Coordinates(0,2));
-		listCoord.add(new Coordinates(0,3));
-		listCoord.add(new Coordinates(1,0));
-		listCoord.add(new Coordinates(1,1));
-		listCoord.add(new Coordinates(1,2));
-		listCoord.add(new Coordinates(1,3));
-		listCoord.add(new Coordinates(2,0));
-		listCoord.add(new Coordinates(2,1));
-		listCoord.add(new Coordinates(2,2));
-		listCoord.add(new Coordinates(2,3));
-		
-		for(Coordinates cor : listCoord)
-			squareP.add(cor);
-		
-		Polyomino P = new Polyomino(squareP);
-		Tiling t = new Tiling();
-		Tiling.adaptRepresentation(P, S);
-		for (int i = 0; i < t.M.length; i++) {
-			for (int j = 0; j < t.M[i].length; j++)
-				System.out.print(t.M[i][j] + " ");
-			System.out.println();
-		}
-		DancingLinks data = new DancingLinks(t.M);
+		Canva canva = new Canva(1900, 1000, 20);
 
-		//List<List<List<Integer>>> cover = data.exactCover();
-		//System.out.println(cover);
-		
+		Set<Polyomino> S = Polyomino.generate_fixed_polyominoes(4);
+		System.out.println(S.size());
+		Polyomino P = Polyomino.fromString("[(0,0),(0,1),(1,0)]").dilatation(2);
+
+		PolyominoTiling tiling = new PolyominoTiling(P, new ArrayList<>(S));
+
+		tiling.allow_repetitions = false;
+		tiling.allow_rotations = false;
+		tiling.allow_symmetries = false;
+
+
+		List<List<Polyomino>> list_of_coverages = tiling.solve();
+
+		System.out.println(String.format("%d coverages possible.", list_of_coverages.size()));
+
 		List<Color> listOfColors = new LinkedList<>();
 		listOfColors.add(Color.red);
 		listOfColors.add(Color.blue);
@@ -67,24 +35,20 @@ public class Test8 {
 		listOfColors.add(Color.orange);
 		listOfColors.add(Color.black);
 
-		/*
-		int i;
-		for(HashSet<HashSet<Integer>> set : cover) {
-			i = 0;
-			for(HashSet<Integer> polyoInt : set) {
-				Set<Coordinates> coords = new HashSet<>();
-				for(int cor : polyoInt) {
-					coords.add(listCoord.get(cor-1));
-				}
-				Polyomino polyo = new Polyomino(coords);
-				polyo.draw_on(canva, listOfColors.get(i));
-				i++;
+		int k = 0;
+		for (List<Polyomino> coverage : list_of_coverages) {
+			int i = 0;
+			for (Polyomino p : coverage) {
+				p.draw_on(canva, listOfColors.get(i));
+				i = (i + 1) % 6;
 			}
 			canva.offset();
+			canva.offset();
+			canva.offset();
+			canva.offset();
+			k++;
+			if (k > 10) break;
 		}
 		canva.show();
-
-		 */
-		
 	}
 }
