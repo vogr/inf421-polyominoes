@@ -25,7 +25,7 @@ public class Test4 {
 		}
 		System.out.println("\n\n*******  TEST WITH ALL SUBSETS *******");
 		Subsets sub = new Subsets();
-		for (int size=1; size < 20; size++)
+		for (int size=1; size < 11; size++)
 		{
 			ExactCover exact = new ExactCover(
 							Subsets.transformToMatrix(sub.getAllSubsets(size), size)

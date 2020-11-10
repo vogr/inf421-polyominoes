@@ -25,7 +25,7 @@ public class Test6 {
 
 		System.out.println("\n\n*******  TEST WITH ALL SUBSETS *******");
 		Subsets sub = new Subsets();
-		for (int size=1; size < 20; size++)
+		for (int size=1; size < 13; size++)
 		{
 
 			int[][] M = Subsets.transformToMatrix(sub.getAllSubsets(size), size);
